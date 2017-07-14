@@ -1,0 +1,19 @@
+---
+title: "Naggle Ghent R Notebook"
+output: html_notebook
+---
+### Loading libraries, instantiating variables, blah, blah, blah!
+
+```{r}
+library(dplyr)
+library(lubridate)
+library(readr)
+library(zipcode)
+library(choroplethr)
+
+ghent_housing_tr_df <- readr::read_csv(file.choose())
+```
+### Adding lat and long with zipcode for possible 
+```{r}
+
+```
