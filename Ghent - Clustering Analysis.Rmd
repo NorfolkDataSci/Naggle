@@ -1,0 +1,44 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+```{r}
+library(ggplot2)
+library(dplyr)
+library(RDSTK)
+library(leaflet)
+```
+
+```{r}
+columns<-c(3, 8, 9, 10, 16, 17)
+
+new_df<-df[,columns]
+
+new_df$whole_address<-paste(new_df$`Property Street`, new_df$`Property City`, new_df$`Property State`, new_df$`Property Zip`)
+new_df$total<-new_df$`2016 Building`+new_df$`2016 Land`
+```
+
+```{r}
+geo_df<-sapply(new_df$whole_address, RDSTK::street2coordinates)
+
+geo_df<-ldply(geo_df, data.frame)
+
+names(geo_df)[names(geo_df) == ".id"] <- "whole_address"
+
+complete_df<-merge(geo_df, new_df)
+
+complete_df<-
+```
+
+```{r}
+pal <- colorQuantile(c("blue"), domain = as.numeric(complete_df$total))
+
+leaflet() %>%
+  addTiles() %>%
+  addCircleMarkers(lng=complete_df$longitude, lat=complete_df$latitude, weight=3, radius=3, clusterOptions=NULL, opacity=.2, color=pal(complete_df$total)) %>%
+  addLegend(position = "topright", pal = pal, values = as.numeric(complete_df$total))
+```
+
+
+
+
